@@ -92,7 +92,9 @@ const Input = () => {
         <label htmlFor="file">
           <img src={Img} alt="" />
         </label>
-        <button onClick={handleSend}>Send</button>
+        <button style={{ borderRadius: "3px" }} onClick={handleSend}>
+          Send
+        </button>
       </div>
     </div>
   );
