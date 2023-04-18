@@ -5,12 +5,21 @@ import axios from "axios";
 import BarChart from "../components/BarChart";
 
 export default function Stats() {
-  const [mood, setMood] = useState("");
+  const [mood, setMood] = useState({});
   useEffect(() => {
-    axios.get("/api").then((res) => setMood(res.data));
+    // axios()
+    getApiData()
   }, []);
   //   console.log(Object.values(mood));
   //   console.log(Object.keys(mood));
+  const getApiData = async () => {
+    const response = await fetch(
+      "https://chithhibackend.onrender.com/api",
+    ).then((response) => response.json());
+
+    // console.log(response)
+    setMood(response)
+  };
   const data = Object.values(mood);
   const labels = Object.keys(mood);
   let sum = 0;
@@ -48,7 +57,7 @@ export default function Stats() {
       },
     ],
   };
-  console.log(barData);
+  // console.log(barData);
   // -----------------UI-----------------
 
   return (
