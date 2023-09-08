@@ -69,7 +69,7 @@ const Register = () => {
           <input required type="text" placeholder="Display name" />
           <input required type="email" placeholder="Email" />
           <input required type="password" placeholder="Password" />
-          <input required type="file" id="file" />
+          <input required type="file" id="file" accept="image/*" />
           {/* <label htmlFor="file">
             <img src={Add} alt="" />
             <span>Add an avatar</span>

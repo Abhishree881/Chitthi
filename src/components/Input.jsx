@@ -96,6 +96,7 @@ const Input = () => {
           className="file-chat"
           id="file"
           onChange={(e) => setImg(e.target.files[0])}
+          accept="image/*"
         />
         <label htmlFor="file">
           <img src={Img} alt="" />
