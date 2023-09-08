@@ -25,15 +25,16 @@ const Chat = () => {
               backgroundColor: "#DDDDF7",
               border: "none",
               color: "#5D5B8D",
-              borderRadius: "2px",
+              borderRadius: "5px",
+              padding: "5px 10px",
             }}
             onClick={handleClick}
           >
             Mood
           </button>
-          <img src={Cam} alt="" />
+          {/* <img src={Cam} alt="" />
           <img src={Add} alt="" />
-          <img src={More} alt="" />
+          <img src={More} alt="" /> */}
         </div>
       </div>
       <Messages />

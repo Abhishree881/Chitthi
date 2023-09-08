@@ -6,19 +6,21 @@ import BarChart from "../components/BarChart";
 
 export default function Stats() {
   const [mood, setMood] = useState({});
+  const [load, setLoad] = useState(false);
   useEffect(() => {
     // axios()
-    getApiData()
+    getApiData();
   }, []);
   //   console.log(Object.values(mood));
   //   console.log(Object.keys(mood));
   const getApiData = async () => {
+    setLoad(true);
     const response = await fetch(
-      "https://chithhibackend.onrender.com/api",
+      "https://chithhibackend.onrender.com/api"
     ).then((response) => response.json());
-
+    setLoad(false);
     // console.log(response)
-    setMood(response)
+    setMood(response);
   };
   const data = Object.values(mood);
   const labels = Object.keys(mood);
@@ -58,12 +60,13 @@ export default function Stats() {
     ],
   };
   // console.log(barData);
+
   // -----------------UI-----------------
 
   return (
     <div className="stats-page">
       <div className="header">
-        <h1>Overall Mood Status on the App</h1>
+        {load ? <h1>Loading... </h1> : <h1>Overall Mood Status on the App</h1>}
       </div>
       <div className="main-stats">
         <div className="flex">

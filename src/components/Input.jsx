@@ -73,6 +73,13 @@ const Input = () => {
     setText("");
     setImg(null);
   };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      handleSend();
+      setText("");
+    }
+  };
   return (
     <div className="input">
       <input
@@ -80,12 +87,13 @@ const Input = () => {
         placeholder="Type something..."
         onChange={(e) => setText(e.target.value)}
         value={text}
+        onKeyPress={handleKeyPress}
       />
       <div className="send">
-        <img src={Attach} alt="" />
+        {/* <img src={Attach} alt="" /> */}
         <input
           type="file"
-          style={{ display: "none" }}
+          className="file-chat"
           id="file"
           onChange={(e) => setImg(e.target.files[0])}
         />
