@@ -15,9 +15,9 @@ export default function Stats() {
   //   console.log(Object.keys(mood));
   const getApiData = async () => {
     setLoad(true);
-    const response = await fetch("https://chitthi2-idkpzygv.b4a.run/api").then(
-      (response) => response.json()
-    );
+    const response = await fetch(
+      "https://chiithibackend2-8zas.zeet-abhi21.zeet.app/api"
+    ).then((response) => response.json());
     setLoad(false);
     // console.log(response)
     setMood(response);
