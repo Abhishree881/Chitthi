@@ -16,7 +16,7 @@ export default function Stats() {
   const getApiData = async () => {
     setLoad(true);
     const response = await fetch(
-      "https://chiithibackend2-8zas.zeet-abhi21.zeet.app/api"
+      "https://chitthi-abhi881.koyeb.app/api"
     ).then((response) => response.json());
     setLoad(false);
     // console.log(response)
