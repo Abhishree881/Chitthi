@@ -4,7 +4,7 @@ import { ChatContext } from "../context/ChatContext";
 import { db } from "../firebase";
 import Message from "./Message";
 
-const Messages = () => {
+const Messages = ({ setImageSrc, setIsOpen }) => {
   const [messages, setMessages] = useState([]);
   const { data } = useContext(ChatContext);
 
@@ -23,7 +23,12 @@ const Messages = () => {
   return (
     <div className="messages">
       {messages.map((m) => (
-        <Message message={m} key={m.id} />
+        <Message
+          message={m}
+          key={m.id}
+          setImageSrc={setImageSrc}
+          setIsOpen={setIsOpen}
+        />
       ))}
     </div>
   );

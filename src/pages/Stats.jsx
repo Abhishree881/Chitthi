@@ -5,19 +5,23 @@ import axios from "axios";
 import BarChart from "../components/BarChart";
 
 export default function Stats() {
+  const [firstLoad, setFirstLoad] = useState(true);
   const [mood, setMood] = useState({});
   const [load, setLoad] = useState(false);
   useEffect(() => {
     // axios()
-    getApiData();
+    if (firstLoad) {
+      getApiData();
+      setFirstLoad(false);
+    }
   }, []);
   //   console.log(Object.values(mood));
   //   console.log(Object.keys(mood));
   const getApiData = async () => {
     setLoad(true);
-    const response = await fetch(
-      "https://chitthi-abhi881.koyeb.app/api"
-    ).then((response) => response.json());
+    const response = await fetch("https://chitthi-abhi881.koyeb.app/mood").then(
+      (response) => response.json()
+    );
     setLoad(false);
     // console.log(response)
     setMood(response);
