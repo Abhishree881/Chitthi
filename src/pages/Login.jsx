@@ -29,7 +29,7 @@ const Login = () => {
           <input required type="email" placeholder="Email" />
           <input required type="password" placeholder="Password" />
           <button>Sign in</button>
-          {err && <span>Something went wrong </span>}
+          {err && <span className="error">Something went wrong </span>}
         </form>
         <p>
           You don't have an account?{" "}
