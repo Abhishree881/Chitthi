@@ -31,7 +31,7 @@ const Chat = ({ setIsSidebarOpen, setImageSrc, setIsOpen }) => {
   }, [api]);
   const getApiData = async () => {
     const response = await fetch(
-      `filthy-aurora-abhi881-43c020ec.koyeb.app/mood/${data.user.uid}`
+      `https://filthy-aurora-abhi881-43c020ec.koyeb.app/mood/${data.user.uid}`
     ).then((response) => response.json());
     const arrayOfValues = Object.keys(response?.mood || ['neutral']);
     setMood(arrayOfValues[0].charAt(0).toUpperCase() + arrayOfValues[0].slice(1));
