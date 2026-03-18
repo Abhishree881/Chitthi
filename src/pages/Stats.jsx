@@ -19,7 +19,7 @@ export default function Stats() {
   //   console.log(Object.keys(mood));
   const getApiData = async () => {
     setLoad(true);
-    const response = await fetch("https://chitthi-abhi881.koyeb.app/mood").then(
+    const response = await fetch("filthy-aurora-abhi881-43c020ec.koyeb.app/mood").then(
       (response) => response.json()
     );
     setLoad(false);
