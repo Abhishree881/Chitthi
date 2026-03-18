@@ -12,6 +12,8 @@ const Chats = ({ setIsSidebarOpen, setImageSrc, setIsOpen }) => {
   const { dispatch } = useContext(ChatContext);
 
   useEffect(() => {
+    if (!currentUser?.uid) return;
+
     const getChats = () => {
       const unsub = onSnapshot(doc(db, "userChats", currentUser.uid), (doc) => {
         setChats(doc.data());
@@ -22,8 +24,8 @@ const Chats = ({ setIsSidebarOpen, setImageSrc, setIsOpen }) => {
       };
     };
 
-    currentUser.uid && getChats();
-  }, [currentUser.uid]);
+    getChats();
+  }, [currentUser?.uid]);
 
   const handleSelect = (u) => {
     setIsSidebarOpen(true);
@@ -43,7 +45,9 @@ const Chats = ({ setIsSidebarOpen, setImageSrc, setIsOpen }) => {
             <img
               onClick={(e) => {
                 e.stopPropagation();
-                setImageSrc(chat[1].userInfo.photoURL);
+                setImageSrc(
+                  chat[1].userInfo.photoURLLarge || chat[1].userInfo.photoURL
+                );
                 setIsOpen(true);
               }}
               src={chat[1].userInfo.photoURL}

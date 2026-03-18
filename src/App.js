@@ -8,7 +8,7 @@ import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 
 function App() {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, loading } = useContext(AuthContext);
   // const [mood, setMood] = useState("");
 
   // useEffect(() => {
@@ -18,6 +18,9 @@ function App() {
   // console.log(mood);
 
   const ProtectedRoute = ({ children }) => {
+    // Wait for "usthe auth state to resolve before deciding where to navigate
+    if (loading) return <div className="loader"/>;
+
     if (!currentUser) {
       return <Navigate to="/login" />;
     }

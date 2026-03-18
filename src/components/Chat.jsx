@@ -31,16 +31,17 @@ const Chat = ({ setIsSidebarOpen, setImageSrc, setIsOpen }) => {
   }, [api]);
   const getApiData = async () => {
     const response = await fetch(
-      `https://chitthi-abhi881.koyeb.app/mood/${data.user.uid}`
+      `http://127.0.0.1:8000/mood/${data.user.uid}`
     ).then((response) => response.json());
-    const arrayOfValues = Object.keys(response);
-    setMood(arrayOfValues[0]);
+    const arrayOfValues = Object.keys(response?.mood || ['neutral']);
+    setMood(arrayOfValues[0].charAt(0).toUpperCase() + arrayOfValues[0].slice(1));
   };
   const handleBackClick = () => {
     if (isMobile) {
       setIsSidebarOpen(false);
     }
   };
+  
   return (
     <div className="chat">
       <div className="chatInfo">
@@ -49,19 +50,19 @@ const Chat = ({ setIsSidebarOpen, setImageSrc, setIsOpen }) => {
           <img
             onClick={(e) => {
               e.stopPropagation();
-              setImageSrc(data.user?.photoURL);
+              setImageSrc(data.user?.photoURLLarge);
               setIsOpen(true);
             }}
             style={{ cursor: "pointer" }}
             className="userImage"
-            src={data.user?.photoURL}
+            src={data.user?.photoURLLarge? data.user.photoURLLarge : data.user?.photoURL}
             alt=""
           />
           <span>{data.user?.displayName}</span>
         </div>
         <div className="chatIcons">
           <button onClick={handleClick}>
-            {mood ? <span>{mood}</span> : <span>Mood</span>}
+            {mood ? <span>{mood}</span> : <span>Neutral</span>}
           </button>
           {/* <img src={Cam} alt="" />
           <img src={Add} alt="" />

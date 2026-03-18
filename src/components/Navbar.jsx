@@ -6,6 +6,8 @@ import { AuthContext } from "../context/AuthContext";
 const Navbar = ({ setImageSrc, setIsOpen }) => {
   const { currentUser } = useContext(AuthContext);
 
+  if (!currentUser) return null;
+
   return (
     <div className="navbar">
       <span className="logo">Chitthi</span>
@@ -13,7 +15,7 @@ const Navbar = ({ setImageSrc, setIsOpen }) => {
         <img
           onClick={(e) => {
             e.stopPropagation();
-            setImageSrc(currentUser.photoURL);
+            setImageSrc(currentUser.photoURLLarge || currentUser.photoURL);
             setIsOpen(true);
           }}
           style={{ cursor: "pointer" }}

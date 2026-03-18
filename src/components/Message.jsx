@@ -11,6 +11,8 @@ const Message = ({ message, setImageSrc, setIsOpen }) => {
   useEffect(() => {
     ref.current?.scrollIntoView({ behavior: "smooth" });
   }, [message]);
+
+  if (!currentUser) return null;
   // console.log(message);
 
   return (
@@ -24,16 +26,16 @@ const Message = ({ message, setImageSrc, setIsOpen }) => {
             e.stopPropagation();
             setImageSrc(
               message.senderId === currentUser.uid
-                ? currentUser.photoURL
-                : data.user.photoURL
+                ? currentUser.photoURLLarge || currentUser.photoURL
+                : data.user.photoURLLarge || data.user.photoURL
             );
             setIsOpen(true);
           }}
           style={{ cursor: "pointer" }}
           src={
             message.senderId === currentUser.uid
-              ? currentUser.photoURL
-              : data.user.photoURL
+              ? currentUser.photoURLLarge || currentUser.photoURL
+              : data.user.photoURLLarge || data.user.photoURL
           }
           alt=""
         />

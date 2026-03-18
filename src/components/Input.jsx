@@ -10,9 +10,8 @@ import {
   Timestamp,
   updateDoc,
 } from "firebase/firestore";
-import { db, storage } from "../firebase";
+import { db } from "../firebase";
 import { v4 as uuid } from "uuid";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { IoCloseSharp } from "react-icons/io5";
 
 const Modal = ({
@@ -61,6 +60,50 @@ const Input = ({ setApi }) => {
   const { data } = useContext(ChatContext);
   const [selectedImage, setSelectedImage] = useState(null);
 
+  const compressImage = (file, maxWidth = 400, maxHeight = 400, quality = 0.8) => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const img = new Image();
+
+      img.onload = () => {
+        // Calculate new dimensions while preserving aspect ratio
+        let { width, height } = img;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = (height * maxWidth) / width;
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = (width * maxHeight) / height;
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        // Draw and compress
+        ctx.drawImage(img, 0, 0, width, height);
+        canvas.toBlob(resolve, 'image/jpeg', quality);
+      };
+
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const onClose = (e) => {
     setModal(false);
     setImg(null);
@@ -86,28 +129,32 @@ const Input = ({ setApi }) => {
     const textMessage = text;
     setText("");
     if (img) {
-      const storageRef = ref(storage, uuid());
+      try {
+        // Compress image and convert to base64
+        const compressedFile = await compressImage(img);
+        const base64Image = await fileToBase64(compressedFile);
 
-      const uploadTask = uploadBytesResumable(storageRef, img);
-
-      uploadTask.on(
-        (error) => {
-          //TODO:Handle Error
-        },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateDoc(doc(db, "chats", data.chatId), {
-              messages: arrayUnion({
-                id: uuid(),
-                text: textMessage,
-                senderId: currentUser.uid,
-                date: Timestamp.now(),
-                img: downloadURL,
-              }),
-            });
-          });
-        }
-      );
+        await updateDoc(doc(db, "chats", data.chatId), {
+          messages: arrayUnion({
+            id: uuid(),
+            text: textMessage,
+            senderId: currentUser.uid,
+            date: Timestamp.now(),
+            img: base64Image,
+          }),
+        });
+      } catch (error) {
+        console.error("Error processing image:", error);
+        // Fallback to sending text only if image processing fails
+        await updateDoc(doc(db, "chats", data.chatId), {
+          messages: arrayUnion({
+            id: uuid(),
+            text: textMessage,
+            senderId: currentUser.uid,
+            date: Timestamp.now(),
+          }),
+        });
+      }
     } else {
       await updateDoc(doc(db, "chats", data.chatId), {
         messages: arrayUnion({
