@@ -24,7 +24,7 @@ export default function Stats() {
     );
     setLoad(false);
     // console.log(response)
-    setMood(response);
+    setMood(response?.mood || { neutral: 1 });
   };
   const data = Object.values(mood);
   const labels = Object.keys(mood);
